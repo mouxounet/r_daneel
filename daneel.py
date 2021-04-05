@@ -92,12 +92,14 @@ async def dev(ctx):
 
 # Fonctions réservées aux ops
 
+
 @bot.command(name="k", help='Les commandes kubectl')
 @commands.has_role("ops")
 async def k(ctx, *args):
     """Les commandes kubectl"""
     retour = kubectl.ma_commande_kubectl(*args)
     await ctx.send(retour)
+
 
 # Gestion des erreurs
 
