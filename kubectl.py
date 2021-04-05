@@ -8,7 +8,11 @@ Date : 20/03/2021
 Todo : 
 """
 
+import os
+
 # fonctions
 def ma_commande_kubectl(*args):
+    """Passe une commande kubectl"""
     commande = "kubectl "+" ".join(args)
-    return commande
+    sortie = os.popen(commande).read()
+    return sortie
