@@ -15,6 +15,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import surveillance
 import automate
+import kubectl
 
 # Variables
 
@@ -91,12 +92,12 @@ async def dev(ctx):
 
 # Fonctions réservées aux ops
 
-
-@bot.command(name='ops', help='[OPS] une commande pour les ops', pass_context=True)
+@bot.command(name="k", help='Les commandes kubectl')
 @commands.has_role("ops")
-async def ops(ctx):
-    await ctx.send(f'Hey, tu as le droit de lancer la commande ops')
-
+async def k(ctx, *args):
+    """Les commandes kubectl"""
+    retour = kubectl.ma_commande_kubectl(*args)
+    await ctx.send(retour)
 
 # Gestion des erreurs
 
