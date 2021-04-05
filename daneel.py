@@ -85,7 +85,10 @@ async def repos(ctx):
 async def minikube(ctx, *args):
     """Les commandes minikube"""
     retour = kubectl.ma_commande_minikube(*args)
-    await ctx.send(retour)
+    if retour:
+        await ctx.send(retour)
+    else:
+        await ctx.send("erreur avec la commande")
 
 # Fontions réservées aux dev
 
@@ -104,8 +107,10 @@ async def dev(ctx):
 async def k(ctx, *args):
     """Les commandes kubectl"""
     retour = kubectl.ma_commande_kubectl(*args)
-    await ctx.send(retour)
-
+    if retour:
+        await ctx.send(retour)
+    else:
+        await ctx.send("erreur avec la commande")
 
 # Gestion des erreurs
 
