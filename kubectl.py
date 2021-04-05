@@ -16,3 +16,9 @@ def ma_commande_kubectl(*args):
     commande = "kubectl "+" ".join(args)
     sortie = os.popen(commande).read()
     return sortie
+
+def ma_commande_minikube(*args):
+    """Passe une commande minikube"""
+    commande = "minikube "+" ".join(args)
+    sortie = os.popen(commande).read()
+    return sortie

@@ -80,6 +80,12 @@ async def repos(ctx):
     await bot.logout()
     quit()
 
+@bot.command(name="minikube", help='Les commandes kubectl')
+@commands.has_role("admin")
+async def minikube(ctx, *args):
+    """Les commandes minikube"""
+    retour = kubectl.ma_commande_minikube(*args)
+    await ctx.send(retour)
 
 # Fontions réservées aux dev
 
