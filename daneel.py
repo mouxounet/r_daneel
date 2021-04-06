@@ -84,7 +84,7 @@ async def repos(ctx):
 @commands.has_role("admin")
 async def minikube(ctx, *args):
     """Les commandes minikube"""
-    retour = kubectl.ma_commande_minikube(*args)
+    retour = await kubectl.ma_commande_minikube(*args)
     if retour:
         await ctx.send(retour)
     else:
@@ -106,7 +106,7 @@ async def dev(ctx):
 @commands.has_role("ops")
 async def k(ctx, *args):
     """Les commandes kubectl"""
-    retour = kubectl.ma_commande_kubectl(*args)
+    retour = await kubectl.ma_commande_kubectl(*args)
     if retour:
         await ctx.send(retour)
     else:
