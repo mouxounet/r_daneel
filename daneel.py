@@ -13,7 +13,6 @@ import discord
 import asyncio
 from discord.ext import commands
 from dotenv import load_dotenv
-import surveillance
 import automate
 import kubectl
 
@@ -122,27 +121,8 @@ async def on_command_error(ctx, error):
         await ctx.send("Tu n'as pas le rôle nécessaire pour effectuer cette commande")
 
 
-# Fonctions asynchrones
-
-
-async def verif(salon, entree, sortie):
-    """
-    Fonction qui vérifie le contenu du fichier LOG
-    """
-    await bot.wait_until_ready()
-    mon_salon = bot.get_channel(salon)
-    while True:
-        tableau = surveillance.verifie_logs(entree, sortie)
-        if tableau:
-            for message in tableau:
-                await mon_salon.send(message)
-        await asyncio.sleep(5)
-
-
 # Programme
 
 
 if __name__ == "__main__":
     bot.run(TOKEN)
-    bot.loop.create_task(
-        verif(salon_alertes, fichier_surveillance, fichier_logs))
