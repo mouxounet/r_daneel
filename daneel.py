@@ -31,6 +31,25 @@ salon_test = 822810525892476939
 salon_alertes = 823184852429307966
 salon_general = 822807737762316321
 
+bleu = 0x496DDB
+rouge = 0xC95D63
+lavande = 0xAE8799
+glauque = 0x717EC3
+orange = 0xEE8434
+
+# Fonctions pour un embed
+
+
+def qui_lance_quoi(ctx):
+    chaine = ctx.message.author.name + " a lancé la commande: " + ctx.message.content
+    return chaine
+
+
+def mon_embed(titre, contenu, couleur):
+    embed = discord.Embed(title=titre, description=contenu, color=couleur)
+    return embed
+
+
 # Fonctions du robot
 
 
@@ -38,7 +57,9 @@ salon_general = 822807737762316321
 async def on_ready():
     """Le robot dit bonjour à la connexion"""
     mon_salon = bot.get_channel(salon_general)
-    await mon_salon.send('Bonjour, je suis R. Daneel Olivaw, et je suis de retour en ligne')
+    un_embed = mon_embed(
+        "Bonjour", "je suis R. Daneel Olivaw, et je suis de retour en ligne", bleu)
+    await mon_salon.send(embed=un_embed)
 
 
 @bot.command(name='bonjour', help='le robot dit bonjour')
@@ -60,7 +81,7 @@ async def lois(ctx, *args):
         4: "!) les Lois doivent être comprises entre 1 et 3"
     }
     for element in args:
-        try :
+        try:
             element = int(element)
         except:
             element = 4
@@ -78,6 +99,7 @@ async def repos(ctx):
     await ctx.send("Je vais me fermer pour maintenance, n'oublie pas de me relancer")
     await bot.logout()
     quit()
+
 
 @bot.command(name="minikube", help='Les commandes kubectl')
 @commands.has_role("admin")
@@ -106,10 +128,15 @@ async def dev(ctx):
 async def k(ctx, *args):
     """Les commandes kubectl"""
     retour = kubectl.ma_commande_kubectl(*args)
+    titre = qui_lance_quoi(ctx)
     if retour:
-        await ctx.send(retour)
+        contenu = retour
+        couleur = lavande
     else:
-        await ctx.send("erreur avec la commande")
+        contenu = "erreur avec la commande"
+        couleur = orange
+    un_embed = mon_embed(titre, contenu, couleur)
+    await ctx.send(embed=un_embed)
 
 # Gestion des erreurs
 
@@ -118,7 +145,10 @@ async def k(ctx, *args):
 async def on_command_error(ctx, error):
     """Gestion des erreurs"""
     if isinstance(error, commands.errors.CheckFailure):
-        await ctx.send("Tu n'as pas le rôle nécessaire pour effectuer cette commande")
+        titre = qui_lance_quoi(ctx)
+        contenu = "Tu n'as pas le rôle nécessaire pour effectuer cette commande"
+        un_embed = mon_embed(titre, contenu, rouge)
+        await ctx.send(embed=un_embed)
 
 
 # Programme
