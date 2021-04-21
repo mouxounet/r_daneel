@@ -5,7 +5,6 @@
 Programme : Bot discord pour démo ISI2020
 Auteur : Rémi Sombrun
 Date : 20/03/2021
-Todo : Récupérer les events extérieurs
 """
 
 import os
@@ -58,14 +57,17 @@ async def on_ready():
     """Le robot dit bonjour à la connexion"""
     mon_salon = bot.get_channel(salon_general)
     un_embed = mon_embed(
-        "Bonjour", "je suis R. Daneel Olivaw, et je suis de retour en ligne", bleu)
+        "Bonjour", "je suis R. Daneel Olivaw, et je suis de retour en ligne", glauque)
     await mon_salon.send(embed=un_embed)
 
 
 @bot.command(name='bonjour', help='le robot dit bonjour')
 async def bonjour(ctx, nom="Giskard"):
     """Fonction de Test"""
-    await ctx.send(f'Bonjour {nom}, je suis Daneel pour te servir')
+    mon_salon = bot.get_channel(salon_general)
+    un_embed = mon_embed(
+        "Bonjour", "Bonjour "+nom+", je suis Daneel pour te servir", glauque)
+    await mon_salon.send(embed=un_embed)
 
 
 @bot.command(name='lois', help='Quelles sont les règles ?')
@@ -80,14 +82,16 @@ async def lois(ctx, *args):
         3: "3) un robot doit protéger sa propre existence aussi longtemps qu'une telle protection ne s'oppose pas à la première ou à la deuxième loi",
         4: "!) les Lois doivent être comprises entre 1 et 3"
     }
+    contenu = ""
     for element in args:
         try:
             element = int(element)
         except:
             element = 4
         if element in range(5):
-            await ctx.send(les_lois[element])
-
+            contenu += les_lois[element]+"\n"
+    un_embed = mon_embed("Les lois de la robotique", contenu, glauque)
+    await ctx.send(embed=un_embed)
 
 # Fonctions réservées aux admins
 
@@ -96,7 +100,9 @@ async def lois(ctx, *args):
 @commands.has_role("admin")
 async def repos(ctx):
     """Fonction d'arrêt du script"""
-    await ctx.send("Je vais me fermer pour maintenance, n'oublie pas de me relancer")
+    un_embed = mon_embed("Fonction d'arrêt du robot",
+                         "Je vais me fermer pour maintenance, n'oublie pas de me relancer", orange)
+    await ctx.send(embed=un_embed)
     await bot.logout()
     quit()
 
@@ -104,12 +110,17 @@ async def repos(ctx):
 @bot.command(name="minikube", help='Les commandes kubectl')
 @commands.has_role("admin")
 async def minikube(ctx, *args):
-    """Les commandes minikube"""
+    """Les commandes minikube, commandes reservées aux admins"""
     retour = kubectl.ma_commande_minikube(*args)
+    titre = qui_lance_quoi(ctx)
     if retour:
-        await ctx.send(retour)
+        contenu = retour
+        couleur = lavande
     else:
-        await ctx.send("erreur avec la commande")
+        contenu = "erreur avec la commande"
+        couleur = orange
+    un_embed = mon_embed(titre, contenu, couleur)
+    await ctx.send(embed=un_embed)
 
 # Fontions réservées aux dev
 
@@ -126,7 +137,7 @@ async def dev(ctx):
 @bot.command(name="k", help='Les commandes kubectl')
 @commands.has_role("ops")
 async def k(ctx, *args):
-    """Les commandes kubectl"""
+    """Les commandes kubectl, commande réservée aux ops"""
     retour = kubectl.ma_commande_kubectl(*args)
     titre = qui_lance_quoi(ctx)
     if retour:
