@@ -107,7 +107,7 @@ async def repos(ctx):
     quit()
 
 
-@bot.command(name="minikube", help='Les commandes kubectl')
+@bot.command(name="minikube", help='Les commandes minikube')
 @commands.has_role("admin")
 async def minikube(ctx, *args):
     """Les commandes minikube, commandes reservées aux admins"""
@@ -148,6 +148,27 @@ async def k(ctx, *args):
         couleur = orange
     un_embed = mon_embed(titre, contenu, couleur)
     await ctx.send(embed=un_embed)
+
+
+@bot.command(name="apply", help='passer un yaml en PJ pour appliquer une configuration')
+@commands.has_role("ops")
+async def apply(ctx): 
+    if ctx.message.attachments:
+        for fic in ctx.message.attachments:
+            fichier_cree = "fichiers_yaml/"+fic.filename
+            await fic.save(fichier_cree)
+            retour = kubectl.ma_commande_kubectl("apply -f ", fichier_cree)
+            titre = qui_lance_quoi(ctx)
+            titre += ", avec le fichier: "+fic.filename
+            if retour:
+                contenu = retour
+                couleur = lavande
+            else:
+                contenu = "erreur avec la commande"
+                couleur = orange
+            un_embed = mon_embed(titre, contenu, couleur)
+            await ctx.send(embed=un_embed)
+
 
 # Gestion des erreurs
 
