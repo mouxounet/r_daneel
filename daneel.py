@@ -3,7 +3,7 @@
 
 """
 Programme : Bot discord pour démo ISI2020
-Auteur : Rémi Sombrun
+Auteurs : Sébastien Barbier, Rémi Sombrun
 Date : 20/03/2021
 """
 
@@ -12,7 +12,6 @@ import discord
 import asyncio
 from discord.ext import commands
 from dotenv import load_dotenv
-import automate
 import kubectl
 
 # Variables
@@ -22,9 +21,6 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 bot = commands.Bot(command_prefix='!')
-
-fichier_surveillance = "fichier_surveillance.txt"
-fichier_logs = "log.txt"
 
 salon_test = 822810525892476939
 salon_alertes = 823184852429307966
