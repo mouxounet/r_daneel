@@ -36,7 +36,7 @@ orange = 0xEE8434
 
 
 def qui_lance_quoi(ctx):
-    chaine = ctx.message.author.name + " a lancé la commande: " + ctx.message.content
+    chaine = ctx.message.author.display_name + " a lancé la commande: " + ctx.message.content
     return chaine
 
 
